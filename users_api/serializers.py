@@ -23,7 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         user_instance, address_data = instance, validated_data.get('address')
-        address = user_instance.address
+        address = user_instance.address if user_instance.address else Address()
         user = create_address_and_user(user_instance, validated_data, address_data, address)
 
         return user
