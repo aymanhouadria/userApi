@@ -31,8 +31,10 @@ class DeleteUsersView(generics.DestroyAPIView):
     def delete(self, request, *args, **kwargs):
         user_instance = self.get_object()
         if user_instance.address:
+            self.perform_destroy(user_instance)
             self.perform_destroy(user_instance.address)
-        self.perform_destroy(user_instance)
+        else:
+            self.perform_destroy(user_instance)
 
         return Response(status=status.HTTP_200_OK)
 
