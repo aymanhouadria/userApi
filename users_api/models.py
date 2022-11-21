@@ -3,9 +3,9 @@ from django.db import models
 
 class User(models.Model):
     name = models.CharField(max_length=50, blank=False,)
-    email = models.EmailField(null=False)
-    birthdate = models.DateField(null=False)
-    address = models.ForeignKey('Address', on_delete=models.RESTRICT)
+    email = models.EmailField(null=True)
+    birthdate = models.DateField(null=True)
+    address = models.ForeignKey('Address', on_delete=models.RESTRICT, null=True)
 
     def __str__(self):
         return str(self.name)

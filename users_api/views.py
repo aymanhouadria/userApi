@@ -5,7 +5,6 @@ from rest_framework import status, generics
 from users_api.models import User
 
 
-
 class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
@@ -13,7 +12,6 @@ class CreateUserView(generics.CreateAPIView):
     @swagger_auto_schema(tags=['User'])
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
-
 
 
 class GetUsersView(generics.ListAPIView):
@@ -25,7 +23,6 @@ class GetUsersView(generics.ListAPIView):
         return self.list(request, *args, **kwargs)
 
 
-
 class DeleteUsersView(generics.DestroyAPIView):
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
@@ -33,11 +30,11 @@ class DeleteUsersView(generics.DestroyAPIView):
     @swagger_auto_schema(tags=['User'])
     def delete(self, request, *args, **kwargs):
         user_instance = self.get_object()
+        if user_instance.address:
+            self.perform_destroy(user_instance.address)
         self.perform_destroy(user_instance)
-        self.perform_destroy(user_instance.address)
 
         return Response(status=status.HTTP_200_OK)
-
 
 
 class UpdateUsersView(generics.UpdateAPIView):
@@ -48,6 +45,7 @@ class UpdateUsersView(generics.UpdateAPIView):
     @swagger_auto_schema(tags=['User'])
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
+
 
 class GetUserView(generics.RetrieveAPIView):
     queryset = User.objects.all()

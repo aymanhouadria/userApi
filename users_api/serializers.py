@@ -9,7 +9,7 @@ class AddressSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    address = AddressSerializer(read_only=False)
+    address = AddressSerializer(read_only=False, required=False)
 
     class Meta:
         model = User
@@ -29,16 +29,17 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-
 def create_address_and_user(user_instance, validated_data, address_data, address):
-    for address_attr, address_value in address_data.items():
-        setattr(address, address_attr, address_value)
-    address.save()
+    if address_data:
+        for address_attr, address_value in address_data.items():
+            setattr(address, address_attr, address_value)
+        address.save()
+        user_instance.address = address
 
     for attr, value in validated_data.items():
         if attr != 'address':
             setattr(user_instance, attr, value)
-    user_instance.address = address
+
     user_instance.save()
 
     return user_instance
