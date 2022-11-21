@@ -1,0 +1,6 @@
+django
+djangorestframework
+drf-extensions
+drf_yasg
+gunicorn
+whitenoise
